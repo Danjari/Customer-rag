@@ -114,3 +114,14 @@
     flex-direction: column;
   }
 }
+.message-content p,
+.message-content li {
+  margin-bottom: 1.5rem; /* Adds more space between paragraphs and list items */
+  line-height: 1.8;    /* Increases line height for better readability */
+}
+
+.message-content ul,
+.message-content ol {
+  padding-left: 1.5rem; /* Indent lists for better structure */
+}
+

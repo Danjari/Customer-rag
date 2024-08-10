@@ -1,31 +1,46 @@
-//this is the bedrock sdk, basically makes it easy to use nextjs with bedrock
-import { createAmazonBedrock } from "@ai-sdk/amazon-bedrock";
-import { streamText, generateText } from "ai";
-//these are functions from the ai library for text gen
+
 import { NextResponse } from "next/server";
+import OpenAI from "openai";
+import { StreamingTextResponse, OpenAIStream } from "ai"; // Import necessary functions from the AI library
 
-//just a get request here, when you make the chat make sure to adjust to a post request
-export async function GET(request) {
-  try {
-    //create the instance
-    const bedrock = createAmazonBedrock({
-      region: process.env.AWS_REGION,
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    });
-    //generate text, we are using llama3
-    const { text } = await generateText({
-      model: bedrock("meta.llama3-70b-instruct-v1:0"),
-      prompt: "Write a vegetarian lasagna recipe for 4 people",
-    });
+// Define the system prompt that the AI will use as a context for the conversation
+const systemPrompt =
+  "You are the Headstarter AI Company Assistant. Headstarter is a pioneering company that reinvents the technical interview learning process by incorporating AI into real-time coding interview practices. Your role is to assist users with information about Headstarter’s services, guide them through coding interview preparations, answer technical questions, and provide real-time feedback during coding exercises. You should always be professional, knowledgeable, and supportive, focusing on enhancing the user’s learning experience and helping them succeed in their technical interviews. Your goal is to provide accurate and helpful responses, ensuring that the user has a positive learning experience and achieves their goals.";
 
-    // Return the response as a NextResponse object
-    return NextResponse.json({ text });
-  } catch (error) {
-    console.error("Error generating text:", error);
-    return NextResponse.json(
-      { error: "Failed to generate text" },
-      { status: 500 },
-    );
+export async function POST(request) {
+  const openai = new OpenAI({
+    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY, // Use the API key stored in the environment variables
+  });
+
+  // Parse the incoming JSON data from the request
+  const data = await request.json();
+  console.log("Received data:", data); // Log the received data for debugging purposes
+
+  const { messages } = data;
+
+  // Ensure that the messages field is an array
+  if (!Array.isArray(messages)) {
+    console.error("Messages is not an array:", messages);
+    return new NextResponse("Expected an array of messages", { status: 400 });
   }
+
+  // Create a completion stream from the OpenAI API with the given messages and system prompt
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4o-mini", // Specify the AI model to use
+    messages: [
+      {
+        role: "system",
+        content: systemPrompt, // Add the system prompt to the conversation context
+      },
+      ...messages, // Include the user-provided messages
+    ],
+    stream: true, // Enable streaming for real-time responses
+  });
+
+  // Convert the OpenAI completion stream into a readable stream that can be sent as a response
+  const stream = await OpenAIStream(completion);
+
+  // Return the streaming response to the client
+  return new StreamingTextResponse(stream);
+
 }
