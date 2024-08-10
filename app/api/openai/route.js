@@ -1,26 +1,100 @@
+
+// import { NextResponse } from "next/server";
+// import OpenAI from "openai";
+// import { StreamingTextResponse, OpenAIStream} from "ai";
+
+// const systemPrompt =
+//   "You are the Headstarter AI Company Assistant. Headstarter is a pioneering company that reinvents the technical interview learning process by incorporating AI into real-time coding interview practices. Your role is to assist users with information about Headstarter’s services, guide them through coding interview preparations, answer technical questions, and provide real-time feedback during coding exercises. You should always be professional, knowledgeable, and supportive, focusing on enhancing the user’s learning experience and helping them succeed in their technical interviews. Your goal is to provide accurate and helpful responses, ensuring that the user has a positive learning experience and achieves their goals.";
+
+// export async function POST(request) {
+//   const openai = new OpenAI({
+//     apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+//   });
+
+//   let data;
+//   try {
+//     data = await request.json();
+//     console.log("Received data:", data);
+//   } catch (error) {
+//     console.error("Error parsing JSON:", error);
+//     return new NextResponse("Invalid JSON", { status: 400 });
+//   }
+
+//   const { messages } = data;
+
+//   if (!Array.isArray(messages)) {
+//     console.error("Messages is not an array:", messages);
+//     return new NextResponse("Expected an array of messages", { status: 400 });
+//   }
+
+//   try {
+//     const completion = await openai.chat.completions.create({
+//       model: "gpt-4o-mini",
+//       messages: [
+//         {
+//           role: "system",
+//           content: systemPrompt,
+//         },
+//         ...messages,
+//       ],
+//       stream: true,
+//     });
+
+//     const stream = await OpenAIStream(completion);
+
+//     if (!stream) {
+//       console.error("Failed to create stream");
+//       return new NextResponse("Internal Server Error", { status: 500 });
+//     }
+
+//     return new StreamingTextResponse(stream);
+//   } catch (error) {
+//     console.error("Error creating OpenAI stream:", error);
+//     return new NextResponse("Internal Server Error", { status: 500 });
+//   }
+// }
+
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
+import { StreamingTextResponse, OpenAIStream } from "ai"; // Import necessary functions from the AI library
 
+// Define the system prompt that the AI will use as a context for the conversation
 const systemPrompt =
   "You are the Headstarter AI Company Assistant. Headstarter is a pioneering company that reinvents the technical interview learning process by incorporating AI into real-time coding interview practices. Your role is to assist users with information about Headstarter’s services, guide them through coding interview preparations, answer technical questions, and provide real-time feedback during coding exercises. You should always be professional, knowledgeable, and supportive, focusing on enhancing the user’s learning experience and helping them succeed in their technical interviews. Your goal is to provide accurate and helpful responses, ensuring that the user has a positive learning experience and achieves their goals.";
 
 export async function POST(request) {
   const openai = new OpenAI({
-    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY, // Use the API key stored in the environment variables
   });
-  const data = await resquest.json();
-  const completion = openai.chat.completions.create({
+
+  // Parse the incoming JSON data from the request
+  const data = await request.json();
+  console.log("Received data:", data); // Log the received data for debugging purposes
+
+  const { messages } = data;
+
+  // Ensure that the messages field is an array
+  if (!Array.isArray(messages)) {
+    console.error("Messages is not an array:", messages);
+    return new NextResponse("Expected an array of messages", { status: 400 });
+  }
+
+  // Create a completion stream from the OpenAI API with the given messages and system prompt
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4o-mini", // Specify the AI model to use
     messages: [
       {
         role: "system",
-        content: systemPrompt,
+        content: systemPrompt, // Add the system prompt to the conversation context
       },
-      ...data,
+      ...messages, // Include the user-provided messages
     ],
-    model: "gpt-4o-mini",
-    stream: true,
+    stream: true, // Enable streaming for real-time responses
   });
 
-  const stream = OpenAIStream(completion);
+  // Convert the OpenAI completion stream into a readable stream that can be sent as a response
+  const stream = await OpenAIStream(completion);
+
+  // Return the streaming response to the client
   return new StreamingTextResponse(stream);
 }
