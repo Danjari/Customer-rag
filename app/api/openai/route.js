@@ -8,7 +8,7 @@ export async function POST(request) {
   const openai = new OpenAI({
     apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
   });
-  const data = await resquest.json();
+  const data = await request.json();
   const completion = openai.chat.completions.create({
     messages: [
       {
