@@ -1,59 +1,4 @@
 
-// import { NextResponse } from "next/server";
-// import OpenAI from "openai";
-// import { StreamingTextResponse, OpenAIStream} from "ai";
-
-// const systemPrompt =
-//   "You are the Headstarter AI Company Assistant. Headstarter is a pioneering company that reinvents the technical interview learning process by incorporating AI into real-time coding interview practices. Your role is to assist users with information about Headstarter’s services, guide them through coding interview preparations, answer technical questions, and provide real-time feedback during coding exercises. You should always be professional, knowledgeable, and supportive, focusing on enhancing the user’s learning experience and helping them succeed in their technical interviews. Your goal is to provide accurate and helpful responses, ensuring that the user has a positive learning experience and achieves their goals.";
-
-// export async function POST(request) {
-//   const openai = new OpenAI({
-//     apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-//   });
-
-//   let data;
-//   try {
-//     data = await request.json();
-//     console.log("Received data:", data);
-//   } catch (error) {
-//     console.error("Error parsing JSON:", error);
-//     return new NextResponse("Invalid JSON", { status: 400 });
-//   }
-
-//   const { messages } = data;
-
-//   if (!Array.isArray(messages)) {
-//     console.error("Messages is not an array:", messages);
-//     return new NextResponse("Expected an array of messages", { status: 400 });
-//   }
-
-//   try {
-//     const completion = await openai.chat.completions.create({
-//       model: "gpt-4o-mini",
-//       messages: [
-//         {
-//           role: "system",
-//           content: systemPrompt,
-//         },
-//         ...messages,
-//       ],
-//       stream: true,
-//     });
-
-//     const stream = await OpenAIStream(completion);
-
-//     if (!stream) {
-//       console.error("Failed to create stream");
-//       return new NextResponse("Internal Server Error", { status: 500 });
-//     }
-
-//     return new StreamingTextResponse(stream);
-//   } catch (error) {
-//     console.error("Error creating OpenAI stream:", error);
-//     return new NextResponse("Internal Server Error", { status: 500 });
-//   }
-// }
-
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { StreamingTextResponse, OpenAIStream } from "ai"; // Import necessary functions from the AI library
@@ -97,4 +42,5 @@ export async function POST(request) {
 
   // Return the streaming response to the client
   return new StreamingTextResponse(stream);
+
 }
