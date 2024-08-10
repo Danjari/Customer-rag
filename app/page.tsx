@@ -1,16 +1,25 @@
 "use client";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [response, setResponse] = useState(null);
+
   useEffect(() => {
-    hello();
-  }, []);
-  async function hello() {
-    const response = await fetch("/api/hello").then((res) => res.json());
-    console.log("response :", response);
-  }
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/openai");
+        const data = await res.json();
+        setResponse(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array means this runs once on component mount
+
   return (
-    <div>Hello World</div>
+    <div>{response ? JSON.stringify(response) : "Loading..."}</div>
   );
 }
