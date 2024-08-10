@@ -22,7 +22,7 @@ const Chat = () => {
     scroll();
   }, [messages]);
 
-  const renderResponse = () => {
+    const renderResponse = () => {
     return (
       <div className="response">
         {messages.map((message, index) => (
@@ -58,37 +58,41 @@ const Chat = () => {
       </div>
     );
   };
+  
 
-  return (
-    <div className="chat flex flex-col h-full">
-      <div
-        ref={chatContainer}
-        className="flex-grow p-4 overflow-y-auto"
-      >
-        {renderResponse()}
-      </div>
-      <form
-        onSubmit={handleSubmit}
-        className="chat-form flex items-center bg-gray-800 p-3 rounded-full mb-4 mx-4"
-      >
-        <input
-          name="input-field"
-          type="text"
-          value={input}
-          onChange={handleInputChange}
-          placeholder="Give me a command..."
-          className="flex-grow bg-transparent border-none text-white placeholder-gray-500 focus:outline-none px-3"
-        />
-        <button
-          type="submit"
-          className="send-button bg-yellow-400 text-black p-2 rounded-full ml-2"
+    return (
+      <div className="chat flex flex-col h-full">
+        {/* Chat messages container with overflow handling */}
+        <div
+          ref={chatContainer}
+          className="flex-grow p-4 overflow-y-auto"
+          style={{ maxHeight: 'calc(100vh - 150px)' }} // Adjust height as needed
         >
-          Send
-        </button>
-      </form>
-    </div>
-  );
-};
+          {renderResponse()}
+        </div>
+  
+        {/* Input field fixed at the bottom */}
+        <form
+          onSubmit={handleSubmit}
+          className="chat-form flex items-center bg-gray-800 p-3 rounded-full mx-4 mb-4"
+        >
+          <input
+            name="input-field"
+            type="text"
+            value={input}
+            onChange={handleInputChange}
+            placeholder="How can I help..."
+            className="flex-grow bg-transparent border-none text-white placeholder-gray-500 focus:outline-none px-3"
+            autoComplete="off"
+          />
+          <button type="submit">
+            <Image src="/send.png" alt="send" width={20} height={20} />
+          </button>
+        </form>
+      </div>
+    );
+  };
+
 
 export default Chat;
-
+ 
