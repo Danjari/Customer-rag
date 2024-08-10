@@ -53,8 +53,8 @@ const Chat = () => {
               <p
                 className={`message p-3 rounded-lg ${
                   message.role === "user"
-                    ? "bg-[#1e293b] text-white"
-                    : "bg-[#0f172a] text-white"
+                    ? "bg-[#1e293b] text-grey"
+                    : "bg-[#0f172a] text-grey"
                 }`}
                 style={{ fontSize: '0.875rem', lineHeight: '1.25rem' }}
               >

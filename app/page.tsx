@@ -9,10 +9,10 @@ export default function Home() {
       <nav className="flex justify-between items-center p-4 bg-[#040d17] border-b border-gray-800">
         <div className="flex items-center">
           <h1 className="ml-3 text-lg font-semibold text-gray-400">
-            <span className="text-white">DevBuddy</span>
+            <span className="text-grey">DevBuddy</span>
           </h1>
         </div>
-        <h1 className="text-sm font-semibold">
+        <h1 className="text-sm font-semibold text-grey">
           Discuss Anything <span className="text-blue-400">Interview Related</span>
         </h1>
       </nav>
