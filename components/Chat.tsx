@@ -2,6 +2,16 @@
 import { useChat } from "ai/react";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import ReactMarkdown from 'react-markdown';
+
+const ChatMessage = ({ content }) => {
+  return (
+    <div className="message-content">
+      <ReactMarkdown>{content}</ReactMarkdown>
+    </div>
+  );
+};
+
 
 const Chat = () => {
   const { messages, input, handleInputChange, handleSubmit } = useChat({
@@ -46,8 +56,9 @@ const Chat = () => {
                     ? "bg-[#1e293b] text-white"
                     : "bg-[#0f172a] text-white"
                 }`}
+                style={{ fontSize: '0.875rem', lineHeight: '1.25rem' }}
               >
-                {message.content}
+                <ChatMessage content={message.content} />
               </p>
               {index < messages.length - 1 && (
                 <div className="horizontal-line my-2" />
