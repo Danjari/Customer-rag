@@ -16,6 +16,14 @@
     "@ai-sdk/provider-utils" "1.0.9"
     "@aws-sdk/client-bedrock-runtime" "3.602.0"
 
+"@ai-sdk/openai@^0.0.44":
+  version "0.0.44"
+  resolved "https://registry.npmjs.org/@ai-sdk/openai/-/openai-0.0.44.tgz"
+  integrity sha512-fIUypicSnuWIOdoRG+dgzAnZDWQrhzqyUvQaLC8hQB6UDAUXkn8sIPdsqKEV35vs3mNXDz/KZ4EEeLxSVGrzMg==
+  dependencies:
+    "@ai-sdk/provider" "0.0.17"
+    "@ai-sdk/provider-utils" "1.0.9"
+
 "@ai-sdk/provider-utils@1.0.9":
   version "1.0.9"
   resolved "https://registry.npmjs.org/@ai-sdk/provider-utils/-/provider-utils-1.0.9.tgz"
