@@ -1,6 +1,6 @@
 
 import { useChat } from "ai/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef,useState } from "react";
 import Image from "next/image";
 import ReactMarkdown from 'react-markdown';
 
@@ -14,10 +14,15 @@ const ChatMessage = ({ content }) => {
 
 
 const Chat = () => {
+  const [selectedApi, setSelectedApi] = useState("/api/openai"); // Default to OpenAI
   const { messages, input, handleInputChange, handleSubmit } = useChat({
-    api: "/api/openai",
+    api: selectedApi,
   });
   const chatContainer = useRef<HTMLDivElement>(null);
+  // Handle API selection change
+  const handleApiChange = (event) => {
+    setSelectedApi(event.target.value);
+  };
 
   const scroll = () => {
     if (chatContainer.current) {
@@ -87,6 +92,10 @@ const Chat = () => {
           onSubmit={handleSubmit}
           className="chat-form flex items-center bg-gray-800 p-3 rounded-full mx-4 mb-4"
         >
+            
+            
+          
+          
           <input
             name="input-field"
             type="text"
@@ -96,6 +105,16 @@ const Chat = () => {
             className="flex-grow bg-transparent border-none text-white placeholder-gray-500 focus:outline-none px-3"
             autoComplete="off"
           />
+          <div className="relative absolute left-0 mt-0 w-30 md:w-[150px] bg-gray-800 text-white rounded-md shadow-lg mx-4">
+              <select
+                value={selectedApi}
+                onChange={handleApiChange}
+                className="block w-full bg-gray-700 text-white rounded-md py-2 px-3 focus:outline-none"
+              >
+                <option value="/api/openai">OpenAI</option>
+                <option value="/api/bedrock">Bedrock</option>
+              </select>
+            </div>
           <button type="submit">
             <Image src="/send.png" alt="send" width={20} height={20} />
           </button>
@@ -106,4 +125,5 @@ const Chat = () => {
 
 
 export default Chat;
+
  
