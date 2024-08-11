@@ -9,8 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-
     "@ai-sdk/amazon-bedrock": "^0.0.13",
+    "@clerk/nextjs": "^5.3.0",
+    "@clerk/themes": "^2.1.19",
     "ai": "^3.3.5",
     "next": "^14.2.5",
     "openai": "^4.55.2",
