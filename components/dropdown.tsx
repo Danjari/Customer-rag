@@ -15,8 +15,8 @@ const Dropdown = ({ selectedApi, handleApiChange }) => {
           onChange={handleApiChange}
           className="block w-full bg-gray-700 text-white rounded-md py-2 px-3 focus:outline-none"
         >
-          <option value="/api/openai">OpenAI</option>
-          <option value="/api/bedrock">Bedrock</option>
+          <option value="/api/openai">gpt4o</option>
+          <option value="/api/bedrock">llama3-70b</option>
         </select>
       </div>
     </div>
